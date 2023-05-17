@@ -61,7 +61,7 @@ const playlist = [
     
 
 
-export default function TheMain() {
+export default function TheMain({toggleScrolling}) {
     return (
         <>
             <main className="text-white relative">
@@ -79,7 +79,7 @@ export default function TheMain() {
                         
                         <div className="grid sm:grid-cols-playlists-mobile md:grid-cols-playlists-tablet lg:grid-cols-playlists-desktop gap-5">
                             {playlist.map((playlist) => (
-                                <Playlist key={playlist.title} {...playlist}/>
+                                <Playlist key={playlist.title} {...playlist} toggleScrolling={toggleScrolling}/>
                             ))}
                         </div>
                     </div>

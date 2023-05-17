@@ -1,28 +1,37 @@
-import { useEffect, useRef } from "react";
+import React, {useLayoutEffect, useEffect} from "react";
 
 import PlaylistContexMenuItem from "./PlaylistContexMenuItem";
 
 
 
+ function PlaylistContexMenu({menuItems, classes, onClose: handleClose}, ref) {
 
-export default function PlaylistContexMenu({menuItems, classes, onClose: handleClose}) {
+   
 
-    const menuRef = useRef(null);
+    useLayoutEffect(() => {
 
-    useEffect(() => {
+        if (!handleClose) return;
 
         function handleClickAway(event) {
-            if (!menuRef.current.contains(event.target)) {
+            if (!ref.current.contains(event.target)) {
                 handleClose();
             }
 
         }
 
+        function handleEsc(event) {
+            if(event.keyCode === 27) {
+                handleClose();
+            }
+        }
+
         document.addEventListener('mousedown', handleClickAway);
+        document.addEventListener('keydown', handleEsc);
         
 
         return () => {
             document.removeEventListener('mousedown', handleClickAway);
+            document.removeEventListener('keydown', handleClickAway);
         }
     })
     
@@ -31,7 +40,7 @@ export default function PlaylistContexMenu({menuItems, classes, onClose: handleC
 
     return (
         <>
-            <ul className={classes} ref={menuRef}>
+            <ul className={classes} ref={ref}>
                 
                 {menuItems.map(({label, subMenuItems}) => (
                     <PlaylistContexMenuItem key={label} subMenuItems={subMenuItems}>
@@ -45,3 +54,5 @@ export default function PlaylistContexMenu({menuItems, classes, onClose: handleC
         </>
     )
 }
+
+ export default React.forwardRef(PlaylistContexMenu);
